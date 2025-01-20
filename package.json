@@ -1,17 +1,15 @@
 {
   "publisher": "antfu",
-  "name": "smart-clicks",
-  "displayName": "Smart Clicks",
+  "name": "Intellij-clicks",
+  "displayName": "Intellij Clicks",
   "version": "0.2.1",
   "packageManager": "pnpm@9.7.1",
-  "description": "Smart selection with double clicks",
-  "author": "Anthony Fu <anthonyfu117@hotmail.com>",
+  "description": "Mimics intellij selection with double clicks",
+  "author": "Bill Hedworth",
   "license": "MIT",
-  "funding": "https://github.com/sponsors/antfu",
-  "homepage": "https://github.com/antfu/vscode-smart-clicks#readme",
   "repository": {
     "type": "git",
-    "url": "https://github.com/antfu/vscode-smart-clicks"
+    "url": "https://github.com/bigsy/vscode-intellij-clicks"
   },
   "bugs": {
     "url": "https://github.com/antfu/vscode-smart-clicks/issues"
@@ -24,8 +22,7 @@
   "icon": "res/icon.png",
   "files": [
     "LICENSE.md",
-    "dist/*",
-    "res/*"
+    "dist/*"
   ],
   "engines": {
     "vscode": "^1.92.0"
@@ -118,7 +115,7 @@
     },
     "commands": [
       {
-        "title": "Smart Clicks: Trigger",
+        "title": "Intellij Clicks: Trigger",
         "command": "smartClicks.trigger"
       }
     ]
