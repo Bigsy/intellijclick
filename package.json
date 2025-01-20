@@ -1,0 +1,163 @@
+{
+  "publisher": "antfu",
+  "name": "smart-clicks",
+  "displayName": "Smart Clicks",
+  "version": "0.2.1",
+  "packageManager": "pnpm@9.7.1",
+  "description": "Smart selection with double clicks",
+  "author": "Anthony Fu <anthonyfu117@hotmail.com>",
+  "license": "MIT",
+  "funding": "https://github.com/sponsors/antfu",
+  "homepage": "https://github.com/antfu/vscode-smart-clicks#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/antfu/vscode-smart-clicks"
+  },
+  "bugs": {
+    "url": "https://github.com/antfu/vscode-smart-clicks/issues"
+  },
+  "categories": [
+    "Other"
+  ],
+  "sideEffects": false,
+  "main": "./dist/index.js",
+  "icon": "res/icon.png",
+  "files": [
+    "LICENSE.md",
+    "dist/*",
+    "res/*"
+  ],
+  "engines": {
+    "vscode": "^1.92.0"
+  },
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "contributes": {
+    "configuration": {
+      "properties": {
+        "smartClicks.clicksInterval": {
+          "type": "number",
+          "default": 600,
+          "description": "The interval between clicks in milliseconds."
+        },
+        "smartClicks.triggerDelay": {
+          "type": "number",
+          "default": 150,
+          "description": "The delay after triggering the selection. To prevent conflicting with normal selection."
+        },
+        "smartClicks.htmlLanguageIds": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": [
+            "html",
+            "vue",
+            "svelte"
+          ],
+          "description": "Array of language IDs to enable html smartClicks"
+        },
+        "smartClicks.rules": {
+          "type": "object",
+          "properties": {
+            "bracket-pair": {
+              "type": "boolean",
+              "default": true,
+              "description": "Pair to inner content of brackets.\n\n```js\n▽\n(foo, bar)\n └──────┘\n```"
+            },
+            "dash": {
+              "type": "boolean",
+              "default": true,
+              "description": "`-` to identifier.\n\n```css\n   ▽\nfoo-bar\n└─────┘\n```"
+            },
+            "html-attr": {
+              "type": "boolean",
+              "default": true,
+              "description": "`=` to HTML attribute.\n\n```html\n          ▽\n<div class=\"btn\"></div>\n     └─────────┘\n```"
+            },
+            "html-element": {
+              "type": "boolean",
+              "default": true,
+              "description": "`<` to the entire element.\n\n```html\n▽\n<div><div></div></div>\n└────────────────────┘\n```"
+            },
+            "html-tag-pair": {
+              "type": "boolean",
+              "default": true,
+              "description": "Open and close tags of a HTML element.\n\n```html\n ▽\n<div><div></div></div>\n └─┘              └─┘\n```"
+            },
+            "js-arrow-fn": {
+              "type": "boolean",
+              "default": true,
+              "description": "`=>` to arrow function.\n\n```js\n       ▽\n(a, b) => a + b\n└─────────────┘\n```"
+            },
+            "js-assign": {
+              "type": "boolean",
+              "default": true,
+              "description": "`=` to assignment.\n\n```js\n        ▽\nconst a = []\n└──────────┘\n```"
+            },
+            "js-block": {
+              "type": "boolean",
+              "default": false,
+              "description": "Blocks like `if`, `for`, `while`, etc. in JavaScript.\n\n```js\n▽\nfunction () {     }\n└─────────────────┘\n```\n\n```js\n▽\nimport { ref } from 'vue'\n└───────────────────────┘\n```"
+            },
+            "js-colon": {
+              "type": "boolean",
+              "default": true,
+              "description": "`:` to the value.\n\n```js\n     ▽\n{ foo: { bar } }\n       └─────┘\n```"
+            },
+            "jsx-tag-pair": {
+              "type": "boolean",
+              "default": true,
+              "description": "Matches JSX elements' start and end tags.\n\n```jsx\n  ▽\n(<Flex.Item>Hi</Flex.Item>)\n  └───────┘     └───────┘\n```"
+            }
+          },
+          "description": "Rule toggles"
+        }
+      }
+    },
+    "commands": [
+      {
+        "title": "Smart Clicks: Trigger",
+        "command": "smartClicks.trigger"
+      }
+    ]
+  },
+  "scripts": {
+    "build": "NODE_ENV=production tsup",
+    "dev": "NODE_ENV=development tsup --watch",
+    "lint": "eslint .",
+    "vscode:prepublish": "nr build",
+    "publish": "vsce publish --no-dependencies",
+    "pack": "vsce package --no-dependencies",
+    "test": "vitest",
+    "typecheck": "tsc --noEmit",
+    "release": "bumpp && nr publish",
+    "readme": "esno ./scripts/docs.ts"
+  },
+  "devDependencies": {
+    "@antfu/eslint-config": "^2.26.0",
+    "@antfu/ni": "^0.22.4",
+    "@antfu/utils": "^0.7.10",
+    "@babel/core": "^7.25.2",
+    "@babel/parser": "^7.25.3",
+    "@babel/traverse": "^7.25.3",
+    "@babel/types": "^7.25.2",
+    "@types/babel__traverse": "^7.20.6",
+    "@types/node": "^22.4.0",
+    "@types/vscode": "^1.92.0",
+    "@vscode/vsce": "^3.0.0",
+    "bumpp": "^9.5.1",
+    "eslint": "^9.9.0",
+    "eslint-plugin-format": "^0.1.2",
+    "esno": "^4.7.0",
+    "fast-glob": "^3.3.2",
+    "node-html-parser": "^6.1.13",
+    "pnpm": "^9.7.1",
+    "rimraf": "^6.0.1",
+    "tsup": "^8.2.4",
+    "typescript": "^5.5.4",
+    "vite": "^5.4.1",
+    "vitest": "^2.0.5"
+  }
+}
