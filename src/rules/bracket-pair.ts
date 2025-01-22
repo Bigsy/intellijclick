@@ -6,22 +6,8 @@ const bracketPairs: [left: string, right: string][] = [
   ['[', ']'],
   ['{', '}'],
   ['<', '>'],
-  ['"', '"'],
-  ['`', '`'],
-  ['\'', '\''],
 ]
 
-/**
- * Pair to inner content of brackets.
- *
- * ```js
- * ▽
- * (foo, bar)
- *  └──────┘
- * ```
- *
- * @name bracket-pair
- */
 export const bracketPairHandler: Handler = {
   name: 'bracket-pair',
   handle({ charLeft, charRight, doc, anchor: _anchor, withOffset }) {
@@ -44,7 +30,6 @@ export const bracketPairHandler: Handler = {
           : new Range(new Position(0, 0), start),
       )
 
-      // search for the right bracket
       let index = -1
       let curly = 0
       for (let i = 0; i < rest.length; i += 1) {
@@ -69,14 +54,14 @@ export const bracketPairHandler: Handler = {
 
       if (DIR === 1) {
         return new Selection(
-          withOffset(start, -1), // Start one character earlier to include opening bracket
-          withOffset(start, index + 1), // End one character later to include closing bracket
+          withOffset(start, -1),
+          withOffset(start, index + 1),
         )
       }
       else {
         return new Selection(
           withOffset(start, index * DIR),
-          withOffset(start, 2), // Extend to include both brackets
+          withOffset(start, 2),
         )
       }
     }

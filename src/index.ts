@@ -1,25 +1,19 @@
-import type { ExtensionContext, Selection, TextEditor } from 'vscode'
-import { TextEditorSelectionChangeKind, commands, window, workspace } from 'vscode'
-import type { AstRoot } from './types'
-import { trigger } from './trigger'
-
-export const astCache = new Map<string, AstRoot[]>()
+import type { ExtensionContext, Position, Selection, TextDocument } from 'vscode'
+import { Range, TextEditorSelectionChangeKind, window, workspace } from 'vscode'
+import { bracketPairHandler } from './rules/bracket-pair'
+import { toSelection } from './utils'
 
 export function activate(ext: ExtensionContext) {
   let last = 0
-  let prevEditor: TextEditor | undefined
   let prevSelection: Selection | undefined
   let timer: any
 
   const config = workspace.getConfiguration('smartClicks')
 
   ext.subscriptions.push(
-    workspace.onDidChangeTextDocument((e) => {
-      astCache.delete(e.document.uri.fsPath)
-    }),
-
     window.onDidChangeTextEditorSelection(async (e) => {
-      clearTimeout(timer)
+      if (timer)
+        clearTimeout(timer)
       if (e.kind !== TextEditorSelectionChangeKind.Mouse) {
         last = 0
         return
@@ -30,8 +24,7 @@ export function activate(ext: ExtensionContext) {
 
       try {
         if (
-          prevEditor !== e.textEditor
-          || !prevSelection
+          !prevSelection
           || !prevSelection.isEmpty
           || e.selections.length !== 1
           || selection.start.line !== prevSelection.start.line
@@ -41,7 +34,6 @@ export function activate(ext: ExtensionContext) {
         }
       }
       finally {
-        prevEditor = e.textEditor
         prevSelection = selection
         last = Date.now()
       }
@@ -54,38 +46,43 @@ export function activate(ext: ExtensionContext) {
           return
         const newSelection = await trigger(e.textEditor.document, prev!, selection)
         const newSelectionText = e.textEditor.document.getText(newSelection?.[0])
-        // Skip empty results when selecting text like "/>", "{}", "()"
         if (newSelection && newSelectionText) {
           last = 0
           e.textEditor.selections = newSelection
         }
       }, config.get('triggerDelay', 150))
     }),
-
-    commands.registerCommand(
-      'smartClicks.trigger',
-      async () => {
-        const editor = window.activeTextEditor
-        if (!editor)
-          return
-
-        const prev = editor.selections[0]
-        await commands.executeCommand('editor.action.smartSelect.expand')
-        const selection = editor.selections[0]
-
-        if (editor.selections.length !== 1)
-          return
-
-        const newSelection = await trigger(editor.document, prev, selection)
-        const newSelectionText = editor.document.getText(newSelection?.[0])
-
-        if (newSelection && newSelectionText)
-          editor.selections = newSelection
-      },
-    ),
   )
 }
 
 export function deactivate() {
+}
 
+async function trigger(
+  doc: TextDocument,
+  prevSelection: Selection,
+  selection: Selection,
+) {
+  const anchor = prevSelection.start
+  const charLeft = doc.getText(new Range(anchor, withOffset(doc, anchor, -1)))
+  const charRight = doc.getText(new Range(anchor, withOffset(doc, anchor, 1)))
+
+  const newSelection = bracketPairHandler.handle({
+    doc,
+    anchor,
+    selection,
+    charLeft,
+    charRight,
+    withOffset: (p, offset) => withOffset(doc, p, offset),
+  })
+
+  if (newSelection)
+    return [toSelection(newSelection)]
+  return undefined
+}
+
+function withOffset(doc: TextDocument, p: Position, offset: number) {
+  if (offset === 0)
+    return p
+  return doc.positionAt(doc.offsetAt(p) + offset)
 }
