@@ -1,7 +1,7 @@
 # VSCode Intellij Clicks Extension Architecture
 
 ## Overview
-A VS Code extension that enhances selection behavior to mimic IntelliJ's smart selection capabilities, particularly for bracket pairs.
+A VS Code extension that enhances selection behavior to mimic IntelliJ's smart selection capabilities, particularly for paired characters (brackets, quotes).
 
 ## Key Components
 
@@ -29,17 +29,19 @@ apply selection changes
   }
   ```
   
-- **Bracket Pair Implementation**: `src/rules/bracket-pair.ts`
-  - Supports 4 bracket types: `()`, `[]`, `{}`, `<>`
+- **Character Pair Implementation**: `src/rules/character-pair.ts`
+  - Supports brackets: `()`, `[]`, `{}`, `<>`
+  - Supports quotes: `""`, `''`, ````
   - Bidirectional scanning logic
   - Nesting-aware selection expansion
+  - Special handling for quotes
 
 ### 3. Configuration System
 - **VS Code Settings** (`package.json` contributions):
   ```json
   "smartClicks.clicksInterval": 600,
   "smartClicks.triggerDelay": 150,
-  "smartClicks.rules.bracket-pair": true
+  "smartClicks.rules.character-pair": true
   ```
   
 - **Runtime Configuration Access**:
@@ -98,7 +100,7 @@ graph TD
     A[User Click] --> B(Selection Change Event)
     B --> C{Meets Timing Criteria?}
     C -->|Yes| D[Execute Handler Chain]
-    D --> E{Bracket Pair Match?}
+    D --> E{Character Pair Match?}
     E -->|Yes| F[Expand Selection]
     E -->|No| G[Default Behavior]
     F --> H[Update Editor Selections]
