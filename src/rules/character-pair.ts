@@ -1,7 +1,7 @@
 import { Position, Range, Selection } from 'vscode'
 import type { Handler } from '../types'
 
-const bracketPairs: [left: string, right: string][] = [
+const characterPairs: [left: string, right: string][] = [
   ['(', ')'],
   ['[', ']'],
   ['{', '}'],
@@ -11,8 +11,8 @@ const bracketPairs: [left: string, right: string][] = [
   ['`', '`'],
 ]
 
-export const bracketPairHandler: Handler = {
-  name: 'bracket-pair',
+export const characterPairHandler: Handler = {
+  name: 'character-pair',
   handle({ charLeft, charRight, doc, anchor: _anchor, withOffset }) {
     for (const DIR of [1, -1]) {
       const OPEN = DIR === 1 ? 0 : 1
@@ -20,7 +20,7 @@ export const bracketPairHandler: Handler = {
       const isQuote = (char: string) => char === '"' || char === "'" || char === '`'
       // Handle quotes specially - they work in both directions
       if (isQuote(charLeft) || isQuote(charRight)) {
-        const quotePair = bracketPairs.find(i => i[0] === charLeft || i[0] === charRight)
+        const quotePair = characterPairs.find(i => i[0] === charLeft || i[0] === charRight)
         if (quotePair) {
           const anchor = withOffset(_anchor, -1)
 
@@ -32,15 +32,15 @@ export const bracketPairHandler: Handler = {
           )
 
           let index = -1
-          let curly = 0
+          let pairCount = 0
           for (let i = 0; i < rest.length; i += 1) {
             const idx = (rest.length + i * DIR) % rest.length
             const c = rest[idx]
             if (rest[idx - 1] === '\\')
               continue
             if (c === quotePair[0]) {
-              curly++
-              if (curly > 1) {
+              pairCount++
+              if (pairCount > 1) {
                 index = i
                 break
               }
@@ -65,13 +65,13 @@ export const bracketPairHandler: Handler = {
         }
       }
 
-      // Handle regular brackets
-      const bracketLeft = bracketPairs.find(i => i[OPEN] === charLeft)
-      const bracketRight = bracketPairs.find(i => i[OPEN] === charRight)
-      const bracket = bracketLeft || bracketRight
-      const anchor = bracketLeft ? withOffset(_anchor, -1) : _anchor
+      // Handle paired characters
+      const pairLeft = characterPairs.find(i => i[OPEN] === charLeft)
+      const pairRight = characterPairs.find(i => i[OPEN] === charRight)
+      const pair = pairLeft || pairRight
+      const anchor = pairLeft ? withOffset(_anchor, -1) : _anchor
 
-      if (!bracket)
+      if (!pair)
         continue
 
       const start = withOffset(anchor, DIR)
@@ -82,18 +82,18 @@ export const bracketPairHandler: Handler = {
       )
 
       let index = -1
-      let curly = 0
+      let pairCount = 0
       for (let i = 0; i < rest.length; i += 1) {
         const idx = (rest.length + i * DIR) % rest.length
         const c = rest[idx]
         if (rest[idx - 1] === '\\')
           continue
-        if (c === bracket[OPEN]) {
-          curly++
+        if (c === pair[OPEN]) {
+          pairCount++
         }
-        else if (c === bracket[CLOSE]) {
-          curly--
-          if (curly < 0) {
+        else if (c === pair[CLOSE]) {
+          pairCount--
+          if (pairCount < 0) {
             index = i
             break
           }

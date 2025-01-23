@@ -1,6 +1,6 @@
 import type { ExtensionContext, Position, Selection, TextDocument } from 'vscode'
 import { Range, TextEditorSelectionChangeKind, window, workspace } from 'vscode'
-import { bracketPairHandler } from './rules/bracket-pair'
+import { characterPairHandler } from './rules/character-pair'
 import { toSelection } from './utils'
 
 export function activate(ext: ExtensionContext) {
@@ -67,7 +67,7 @@ async function trigger(
   const charLeft = doc.getText(new Range(anchor, withOffset(doc, anchor, -1)))
   const charRight = doc.getText(new Range(anchor, withOffset(doc, anchor, 1)))
 
-  const newSelection = bracketPairHandler.handle({
+  const newSelection = characterPairHandler.handle({
     doc,
     anchor,
     selection,
