@@ -44,7 +44,7 @@
             "bracket-pair": {
               "type": "boolean",
               "default": true,
-              "description": "Pair to inner content of brackets.\n\n```js\n▽\n(foo, bar)\n └──────┘\n```"
+              "description": "Pair to inner content of brackets and quotes.\n\n```js\n▽\n(foo, bar)\n └──────┘\n\n▽\n\"hello world\"\n └──────────┘\n```"
             }
           },
           "description": "Rule toggles"
