@@ -28,17 +28,17 @@
   "contributes": {
     "configuration": {
       "properties": {
-        "smartClicks.clicksInterval": {
+        "intellijClicks.clicksInterval": {
           "type": "number",
           "default": 600,
           "description": "The interval between clicks in milliseconds."
         },
-        "smartClicks.triggerDelay": {
+        "intellijClicks.triggerDelay": {
           "type": "number",
           "default": 150,
           "description": "The delay after triggering the selection. To prevent conflicting with normal selection."
         },
-        "smartClicks.rules": {
+        "intellijClicks.rules": {
           "type": "object",
           "properties": {
             "character-pair": {

@@ -35,13 +35,13 @@ This extension can be customized through VS Code settings:
 ```jsonc
 {
   // Interval between clicks in milliseconds
-  "smartClicks.clicksInterval": 600,
+  "intellijClicks.clicksInterval": 600,
 
   // Delay after triggering selection to prevent conflicts
-  "smartClicks.triggerDelay": 150,
+  "intellijClicks.triggerDelay": 150,
 
   // Enable/disable character pair selection
-  "smartClicks.rules.character-pair": true
+  "intellijClicks.rules.character-pair": true
 }
 ```
 

@@ -39,14 +39,14 @@ apply selection changes
 ### 3. Configuration System
 - **VS Code Settings** (`package.json` contributions):
   ```json
-  "smartClicks.clicksInterval": 600,
-  "smartClicks.triggerDelay": 150,
-  "smartClicks.rules.character-pair": true
+  "intellijClicks.clicksInterval": 600,
+  "intellijClicks.triggerDelay": 150,
+  "intellijClicks.rules.character-pair": true
   ```
   
 - **Runtime Configuration Access**:
   ```ts
-  const config = workspace.getConfiguration('smartClicks');
+  const config = workspace.getConfiguration('intellijClicks');
   ```
 
 ### 4. Build System

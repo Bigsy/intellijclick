@@ -8,7 +8,7 @@ export function activate(ext: ExtensionContext) {
   let prevSelection: Selection | undefined
   let timer: any
 
-  const config = workspace.getConfiguration('smartClicks')
+  const config = workspace.getConfiguration('intellijClicks')
 
   ext.subscriptions.push(
     window.onDidChangeTextEditorSelection(async (e) => {
