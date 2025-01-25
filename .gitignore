@@ -46,3 +46,4 @@ Thumbs.db
 .npmrc
 .vscode/
 repomix-output.txt
+*.vsix

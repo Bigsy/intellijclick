@@ -1,17 +1,17 @@
 {
-  "publisher": "antfu",
-  "name": "Intellij-clicks",
-  "displayName": "Intellij Clicks",
-  "version": "0.2.1",
-  "description": "Mimics intellij selection with double clicks",
+  "publisher": "billhedworth",
+  "name": "Intellij Click",
+  "displayName": "IntellijClick",
+  "version": "0.0.1",
+  "description": "A VS Code extension that enhances selection behavior to mimic IntelliJ's smart selection capabilities, particularly for paired characters (brackets, quotes).",
   "author": "Bill Hedworth",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/bigsy/vscode-intellij-clicks"
+    "url": "https://github.com/Bigsy/intellijclick"
   },
   "bugs": {
-    "url": "https://github.com/antfu/vscode-smart-clicks/issues"
+    "url": "https://github.com/Bigsy/intellijclick/issues"
   },
   "categories": [
     "Other"
