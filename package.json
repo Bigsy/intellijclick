@@ -1,8 +1,8 @@
 {
   "publisher": "billhedworth",
-  "name": "Intellij Click",
-  "displayName": "IntellijClick",
-  "version": "0.0.1",
+  "name": "IntellijClick",
+  "displayName": "Intellij Click",
+  "version": "0.0.2",
   "description": "A VS Code extension that enhances selection behavior to mimic IntelliJ's smart selection capabilities, particularly for paired characters (brackets, quotes).",
   "author": "Bill Hedworth",
   "license": "MIT",

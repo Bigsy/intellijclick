@@ -1,5 +1,7 @@
 # IntellijClicks
 
+[![Visual Studio Marketplace Version](https://img.shields.io/visual-studio-marketplace/v/billhedworth.IntellijClick)](https://marketplace.visualstudio.com/items?itemName=billhedworth.IntellijClick)
+
 A VS Code extension that enhances selection behavior to mimic IntelliJ's smart selection capabilities, particularly for paired characters like brackets and quotes.
 
 ## Features
@@ -58,4 +60,3 @@ This extension can be customized through VS Code settings:
    npm run dev    # Watch mode
    npm run build  # Production build
    npm run pack   # Create VSIX package
-   ```
